@@ -93,7 +93,8 @@ void analyze_CRID(FILE *infile, const char *infile_name, long file_length, int v
     {
         CRID_stmid = 0x43524944,  /* CRID */
         SFV_stmid = 0x40534656,   /* @SFV */
-        SFA_stmid = 0x40534641    /* @SFA */
+        SFA_stmid = 0x40534641,   /* @SFA */
+        SBT_stmid = 0x40534254    /* @SBT */
     };
 
     struct stream_info
@@ -271,6 +272,12 @@ void analyze_CRID(FILE *infile, const char *infile_name, long file_length, int v
                                     printf("Stream %d: Audio\n", i);
                                 }
                                 break;
+                            case SBT_stmid:
+                                if (verbosity >= verbose_normal)
+                                {
+                                    printf("Stream %d: Subtitle\n", i);
+                                }
+                                break;
                             default:
                                 CHECK_ERROR (1, "unknown stmid");
                         }
@@ -317,6 +324,9 @@ void analyze_CRID(FILE *infile, const char *infile_name, long file_length, int v
                                 break;
                             case SFA_stmid:
                                 snprintf(name,outfile_name_length,"%s_%d.adx", infile_name, i);
+                                break;
+                            case SBT_stmid:
+                                snprintf(name,outfile_name_length,"%s_%d.sub", infile_name, i);
                                 break;
                         }
                         outfile_names[i] = name;
